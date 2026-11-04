@@ -13,7 +13,9 @@ Le shell de l’application et les tuiles OSM déjà visitées restent utilisabl
 - Chrome ou Edge sur **Android** (Web Serial + Geolocation)
 - Câble **USB OTG data** vers le UV-K1 / UV-K5 V3
 - Firmware Fusion avec K5Viewer et **API overlay niveau 5** (`report_position`)
-- App **Sonde M20** ≥ 1.6 (ou autre decodeur branché) flashée sur la radio
+- App **Sonde M20** ≥ 1.6 flashée (app de test) ; aussi Sonde RS41 / MRZ et
+  APRS RX (positions non compressées). EPIRB 406 et Sonde M10 restent hors USB
+  (overlay plein) — EPIRB via QR Map.
 - Fermer **UV Studio**, Tab5 K1Viewer et tout autre client série
 
 ## Utilisation
