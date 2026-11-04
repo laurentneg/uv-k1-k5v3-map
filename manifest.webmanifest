@@ -1,0 +1,18 @@
+{
+  "name": "UV-K1 Map",
+  "short_name": "K1 Map",
+  "description": "Phone GPS to UV-K1 and decoded positions on OpenStreetMap",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#08131a",
+  "theme_color": "#0b493d",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

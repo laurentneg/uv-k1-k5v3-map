@@ -1,0 +1,124 @@
+:root {
+  color-scheme: dark;
+  --bg: #08131a;
+  --panel: #0e1b24;
+  --border: #27414e;
+  --text: #eaf1f6;
+  --muted: #94a9b4;
+  --accent: #63e6be;
+  --accent-dark: #0b493d;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(180deg, #0f2430, #0a171f);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.brand strong { font-size: 1.05rem; letter-spacing: 0.02em; }
+#statusLine { color: var(--muted); font-size: 0.85rem; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+button {
+  min-height: 2.5rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 0.55rem;
+  border: 1px solid #3a5663;
+  background: #1b303b;
+  color: var(--text);
+  font: inherit;
+}
+
+button.primary {
+  background: var(--accent);
+  color: #06241e;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+button:disabled { opacity: 0.45; }
+
+main {
+  flex: 1;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: 0;
+}
+
+#map {
+  width: 100%;
+  min-height: 55vh;
+  height: 100%;
+  background: #102028;
+}
+
+.panel {
+  max-height: 32vh;
+  overflow: auto;
+  padding: 0.75rem 1rem 1.25rem;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+}
+
+.panel h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+#targetList {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+}
+
+#targetList li { margin: 0.25rem 0; }
+
+.hint {
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+@media (min-width: 900px) {
+  main {
+    grid-template-columns: 1fr 20rem;
+    grid-template-rows: 1fr;
+  }
+  .panel {
+    max-height: none;
+    border-top: none;
+    border-left: 1px solid var(--border);
+  }
+}
