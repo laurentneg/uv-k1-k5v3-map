@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.UVK1Map" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#0B493D</item>
+        <item name="colorPrimaryVariant">#063028</item>
+        <item name="colorOnPrimary">#EAF1F6</item>
+        <item name="colorSecondary">#63E6BE</item>
+        <item name="android:statusBarColor">#0A171F</item>
+        <item name="android:navigationBarColor">#0A171F</item>
+        <item name="android:windowBackground">#08131A</item>
+    </style>
+</resources>

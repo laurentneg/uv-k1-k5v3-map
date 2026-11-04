@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UV-K1 Map</string>
+    <string name="connect">Connecter radio</string>
+    <string name="disconnect">Déconnecter</string>
+    <string name="status_idle">Prêt — branchez le UV-K1 en OTG</string>
+    <string name="targets">Cibles</string>
+    <string name="prefetch">Cache tuiles</string>
+</resources>

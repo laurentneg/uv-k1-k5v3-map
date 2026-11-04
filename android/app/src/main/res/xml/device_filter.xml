@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Fusion / UV-K1 CDC (CherryUSB): 36B7:FFFF -->
+    <usb-device vendor-id="14007" product-id="65535" />
+    <!-- Common CDC ACM fallbacks -->
+    <usb-device class="2" subclass="2" protocol="1" />
+</resources>
