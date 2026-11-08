@@ -2,6 +2,18 @@
 <resources>
     <!-- Fusion / UV-K1 CDC (CherryUSB): 36B7:FFFF -->
     <usb-device vendor-id="14007" product-id="65535" />
-    <!-- Common CDC ACM fallbacks -->
+    <!-- Common CDC ACM class -->
     <usb-device class="2" subclass="2" protocol="1" />
+
+    <!-- USB-UART programming cables (Kenwood K plug) -->
+    <!-- QinHeng CH340 / CH341 / CH9102 -->
+    <usb-device vendor-id="6790" />
+    <!-- Silicon Labs CP210x -->
+    <usb-device vendor-id="4292" />
+    <!-- FTDI -->
+    <usb-device vendor-id="1027" />
+    <!-- Prolific PL2303 -->
+    <usb-device vendor-id="1659" />
+    <!-- WCH CH9102 alternate -->
+    <usb-device vendor-id="6790" product-id="29987" />
 </resources>

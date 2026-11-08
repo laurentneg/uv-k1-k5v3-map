@@ -10,26 +10,53 @@ const el = {
   disconnect: document.querySelector("#disconnectBtn"),
   gps: document.querySelector("#gpsBtn"),
   prefetch: document.querySelector("#prefetchBtn"),
+  linkMode: document.querySelector("#linkMode"),
+  logsBtn: document.querySelector("#logsBtn"),
+  logsDialog: document.querySelector("#logsDialog"),
+  clearLogs: document.querySelector("#clearLogsBtn"),
   list: document.querySelector("#targetList"),
+  statusLog: document.querySelector("#statusLog"),
 };
 
 const map = new MapView("map");
 let gpsRunning = false;
 let lastPhoneFix = null;
+let lastLoggedStatus = null;
+const statusHistory = [];
 
-function setStatus(text) {
+function setStatus(text, { log = true } = {}) {
   el.status.textContent = text;
+  const spam = text.startsWith("GPS →") || text.startsWith("GPS OK");
+  if (log && !spam && text !== lastLoggedStatus) {
+    lastLoggedStatus = text;
+    const when = new Date().toLocaleTimeString([], { hour12: false });
+    statusHistory.unshift(`${when}  ${text}`);
+    if (statusHistory.length > 200) statusHistory.length = 200;
+    if (el.logsDialog.open) renderLogs();
+  }
 }
 
 function renderHistory(history) {
   el.list.innerHTML = "";
+  if (!history.length) {
+    const li = document.createElement("li");
+    li.textContent = "Aucune cible reçue";
+    el.list.appendChild(li);
+    return;
+  }
   for (const item of history) {
     const li = document.createElement("li");
     const when = item.at.toLocaleTimeString([], { hour12: false });
-    li.textContent = `${when} · ${item.label} · ${item.source} · ${item.lat.toFixed(5)}, ${item.lon.toFixed(5)}` +
+    li.textContent =
+      `${when} · ${item.label} · ${item.source} · ${item.lat.toFixed(5)}, ${item.lon.toFixed(5)}` +
       (item.altM ? ` · ${item.altM} m` : "");
     el.list.appendChild(li);
   }
+}
+
+function renderLogs() {
+  renderHistory(map.history);
+  el.statusLog.textContent = statusHistory.join("\n") || "Aucun message";
 }
 
 const link = new K5ViewerLink({
@@ -70,6 +97,10 @@ const phone = new PhoneGps({
     if (link.connected) {
       try {
         await link.sendGps(fix.latCas, fix.lonCas);
+        setStatus(
+          `GPS → radio (${fix.lat.toFixed(5)}, ${fix.lon.toFixed(5)})`,
+          { log: false }
+        );
       } catch (err) {
         setStatus(`Envoi GPS: ${err.message || err}`);
       }
@@ -77,11 +108,28 @@ const phone = new PhoneGps({
   },
 });
 
+function loadLinkMode() {
+  return localStorage.getItem("uvk1_link_mode") || "auto";
+}
+
+function saveLinkMode(mode) {
+  localStorage.setItem("uvk1_link_mode", mode);
+}
+
+el.linkMode.value = loadLinkMode();
+link.linkMode = el.linkMode.value;
+el.linkMode.addEventListener("change", () => {
+  link.linkMode = el.linkMode.value;
+  saveLinkMode(el.linkMode.value);
+  setStatus(`Lien: ${el.linkMode.selectedOptions[0].textContent}`);
+});
+
 el.connect.disabled = !link.supported;
-if (!link.supported) setStatus("Web Serial requis (Chrome / Edge Android ou desktop)");
+if (!link.supported) setStatus("Web Serial requis (Chrome / Edge)");
 
 el.connect.addEventListener("click", async () => {
   try {
+    link.linkMode = el.linkMode.value;
     await link.connect();
     if (lastPhoneFix) await link.sendGps(lastPhoneFix.latCas, lastPhoneFix.lonCas);
   } catch (err) {
@@ -95,11 +143,11 @@ el.gps.addEventListener("click", () => {
   if (gpsRunning) {
     phone.stop();
     gpsRunning = false;
-    el.gps.textContent = "GPS téléphone";
+    el.gps.textContent = "GPS";
   } else {
     phone.start();
     gpsRunning = true;
-    el.gps.textContent = "Arrêter GPS";
+    el.gps.textContent = "Stop GPS";
   }
 });
 
@@ -117,11 +165,21 @@ el.prefetch.addEventListener("click", async () => {
   }
 });
 
+el.logsBtn.addEventListener("click", () => {
+  renderLogs();
+  el.logsDialog.showModal();
+});
+
+el.clearLogs.addEventListener("click", () => {
+  statusHistory.length = 0;
+  map.history.length = 0;
+  renderLogs();
+});
+
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./sw.js").catch(() => {});
 }
 
-// Auto-start GPS on load for field use.
 phone.start();
 gpsRunning = true;
-el.gps.textContent = "Arrêter GPS";
+el.gps.textContent = "Stop GPS";

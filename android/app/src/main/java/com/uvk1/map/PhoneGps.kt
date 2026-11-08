@@ -63,11 +63,18 @@ class PhoneGps(
                         lon
                     )
                 }
-                handler.postDelayed(this, 8000L)
+                handler.postDelayed(this, 5000L)
             }
         }
         reinject = r
-        handler.postDelayed(r, 8000L)
+        handler.postDelayed(r, 5000L)
+    }
+
+    /** Last fix in centi-arcseconds, or null if none yet. */
+    fun lastFixCas(): Pair<Int, Int>? {
+        val lat = lastLatCas ?: return null
+        val lon = lastLonCas ?: return null
+        return lat to lon
     }
 
     fun stop() {

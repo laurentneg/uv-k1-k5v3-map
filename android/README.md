@@ -9,9 +9,10 @@ utilise `usb-serial-for-android` (CDC ACM).
 ## Fonctions
 
 - Inject GPS téléphone → radio (`AA 55 07`, TTL firmware 15 s)
-- Keepalive `55 AA 00 00` toutes les 200 ms
-- Réception des cibles décodées (`AA 55 08`) → marqueurs OSM
-- Filtre USB `36B7:FFFF` (Fusion CDC)
+- Keepalive `55 AA 00 00` toutes les 200 ms + **DTR/RTS** (obligatoire pour que la radio émette)
+- Réception des cibles décodées (`AA 55 08`) → marqueurs OSM + **trace ballon** (sondes)
+- Lien **USB-C CDC** ou **câble K** (CH340/CP210x/FTDI/PL2303)
+- UI compacte : carte plein écran, **Journal** pour logs / cibles
 
 ## Prérequis
 
@@ -43,9 +44,15 @@ export PATH="$PATH:$ANDROID_HOME/platform-tools"
 ## Usage terrain
 
 1. Installer l’APK, autoriser **Localisation**.
-2. Brancher le UV-K1 via OTG ; accepter la permission USB.
-3. **Connecter radio**.
-4. Lancer Sonde M20 (ou autre) : les fixes apparaissent sous **Cibles**.
+2. Choisir le **Lien** :
+   - **Auto** — CDC USB-C si présent, sinon câble de prog (prise K)
+   - **USB-C (CDC)** — prise USB du K1 (pratique, parfois bruyant en RF)
+   - **Câble K (prog)** — OTG → câble Kenwood/Baofeng CH340/CP210x/FTDI/PL2303 → jack K
+3. Brancher, accepter la permission USB, **Lier**.
+4. Lancer Sonde M20 (ou autre) : marqueurs + traces sur la carte ; détails via **Journal**.
+
+Le firmware parle le même protocole K5Viewer (38400) sur USB-C et sur l’UART
+de la prise K. Le câble K évite souvent le bruit S9 du téléphone en OTG USB-C.
 
 ## Structure
 

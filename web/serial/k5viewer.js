@@ -125,6 +125,24 @@ export class K5ViewerParser {
   }
 }
 
+/** USB vendor filters for Web Serial requestPort(). */
+export const LINK_FILTERS = {
+  auto: [
+    { usbVendorId: 0x36b7 }, // Fusion / UV-K1 CDC
+    { usbVendorId: 0x1a86 }, // CH340 / CH9102
+    { usbVendorId: 0x10c4 }, // CP210x
+    { usbVendorId: 0x0403 }, // FTDI
+    { usbVendorId: 0x067b }, // PL2303
+  ],
+  usb_c: [{ usbVendorId: 0x36b7 }],
+  cable_k: [
+    { usbVendorId: 0x1a86 },
+    { usbVendorId: 0x10c4 },
+    { usbVendorId: 0x0403 },
+    { usbVendorId: 0x067b },
+  ],
+};
+
 export class K5ViewerLink {
   constructor({ onStatus, onReported } = {}) {
     this.onStatus = onStatus || (() => {});
@@ -134,6 +152,7 @@ export class K5ViewerLink {
     this.writer = null;
     this.readLoop = null;
     this.keepAliveTimer = null;
+    this.linkMode = "auto";
     this.parser = new K5ViewerParser((pkt) => {
       if (pkt.type === "reported") this.onReported(pkt);
     });
@@ -151,8 +170,15 @@ export class K5ViewerLink {
   async connect() {
     if (!this.supported) throw new Error("Web Serial is not available in this browser");
     this.closing = false;
-    this.port = await navigator.serial.requestPort();
+    const filters = LINK_FILTERS[this.linkMode] || LINK_FILTERS.auto;
+    this.port = await navigator.serial.requestPort({ filters });
     await this.port.open({ baudRate: BAUD, bufferSize: 4096 });
+    // Some UART adapters need DTR/RTS asserted (same as Android path).
+    try {
+      if (this.port.setSignals) {
+        await this.port.setSignals({ dataTerminalReady: true, requestToSend: true });
+      }
+    } catch (_) {}
     this.writer = this.port.writable.getWriter();
     this.reader = this.port.readable.getReader();
     this.readLoop = this.#readForever();

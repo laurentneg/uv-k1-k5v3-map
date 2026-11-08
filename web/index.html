@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b493d">
+  <meta name="color-scheme" content="dark">
+  <title>UV-K1 Map</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-row">
+      <div class="brand">
+        <strong>UV-K1 Map</strong>
+        <span id="statusLine">Hors ligne</span>
+      </div>
+      <button id="logsBtn" type="button" class="ghost">Journal</button>
+    </div>
+    <div class="actions">
+      <label class="link-mode">
+        <span class="sr-only">Lien</span>
+        <select id="linkMode" aria-label="Type de connexion">
+          <option value="auto">Auto</option>
+          <option value="usb_c">USB-C (CDC)</option>
+          <option value="cable_k">Câble K (prog)</option>
+        </select>
+      </label>
+      <button id="connectBtn" class="primary" type="button">Lier</button>
+      <button id="disconnectBtn" type="button" disabled>Couper</button>
+      <button id="gpsBtn" type="button" class="ghost">GPS</button>
+      <button id="prefetchBtn" type="button" class="ghost" disabled>Tuiles</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="map" role="application" aria-label="Carte OpenStreetMap"></div>
+  </main>
+
+  <dialog id="logsDialog" class="logs-dialog">
+    <form method="dialog" class="logs-header">
+      <h2>Journal</h2>
+      <div class="logs-actions">
+        <button id="clearLogsBtn" type="button" class="ghost">Effacer</button>
+        <button value="close" class="primary">Fermer</button>
+      </div>
+    </form>
+    <section>
+      <h3>Cibles</h3>
+      <ol id="targetList"></ol>
+    </section>
+    <section>
+      <h3>Statut</h3>
+      <pre id="statusLog"></pre>
+    </section>
+    <p class="hint">Fermez UV Studio et tout autre client série. Chrome + OTG data, USB-C ou câble K.</p>
+  </dialog>
+
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

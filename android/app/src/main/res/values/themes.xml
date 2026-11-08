@@ -1,12 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- DayNight parent + isLightTheme=false: keeps Material dark widgets
+         even if the phone is in light system mode (fixes unreadable controls). -->
     <style name="Theme.UVK1Map" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">#0B493D</item>
-        <item name="colorPrimaryVariant">#063028</item>
-        <item name="colorOnPrimary">#EAF1F6</item>
-        <item name="colorSecondary">#63E6BE</item>
-        <item name="android:statusBarColor">#0A171F</item>
-        <item name="android:navigationBarColor">#0A171F</item>
-        <item name="android:windowBackground">#08131A</item>
+        <item name="isLightTheme">false</item>
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorPrimaryVariant">@color/accent_dark</item>
+        <item name="colorOnPrimary">@color/on_accent</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorOnSecondary">@color/on_accent</item>
+        <item name="colorSurface">@color/panel</item>
+        <item name="colorOnSurface">@color/text</item>
+        <item name="android:colorBackground">@color/bg</item>
+        <item name="android:textColorPrimary">@color/text</item>
+        <item name="android:textColorSecondary">@color/muted</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="materialButtonStyle">@style/Widget.UVK1.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.UVK1.Button.Outlined</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.UVK1.Dialog</item>
+    </style>
+
+    <style name="Widget.UVK1.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/accent</item>
+        <item name="android:textColor">@color/on_accent</item>
+        <item name="rippleColor">#4063E6BE</item>
+    </style>
+
+    <style name="Widget.UVK1.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/accent</item>
+        <item name="strokeWidth">1.5dp</item>
+        <item name="backgroundTint">@color/panel_elevated</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="rippleColor">#4063E6BE</item>
+    </style>
+
+    <style name="Widget.UVK1.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/accent</item>
+        <item name="rippleColor">#4063E6BE</item>
+    </style>
+
+    <style name="ThemeOverlay.UVK1.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="android:background">@color/panel</item>
+        <item name="colorOnSurface">@color/text</item>
+        <item name="android:textColorPrimary">@color/text</item>
+        <item name="android:textColorSecondary">@color/muted</item>
     </style>
 </resources>

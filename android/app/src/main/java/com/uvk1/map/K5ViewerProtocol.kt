@@ -67,11 +67,15 @@ object K5ViewerProtocol {
                 1 -> "sonde"
                 2 -> "epirb"
                 3 -> "aprs"
+                4 -> "ais"
                 else -> "other"
             }
     }
 
-    class Parser(private val onReported: (ReportedPosition) -> Unit) {
+    class Parser(
+        private val onReported: (ReportedPosition) -> Unit,
+        private val onPosFrame: ((ok: Boolean) -> Unit)? = null,
+    ) {
         private var buf = ByteArray(0)
 
         fun push(chunk: ByteArray) {
@@ -80,6 +84,8 @@ object K5ViewerProtocol {
             System.arraycopy(buf, 0, joined, 0, buf.size)
             System.arraycopy(chunk, 0, joined, buf.size, chunk.size)
             buf = joined
+            // Cap reassembly buffer (screen frames can be large)
+            if (buf.size > 8192) buf = buf.copyOfRange(buf.size - 4096, buf.size)
             drain()
         }
 
@@ -107,7 +113,9 @@ object K5ViewerProtocol {
                         val frame = buf.copyOfRange(0, 29)
                         var xor = 0
                         for (i in 2 until 28) xor = xor xor (frame[i].toInt() and 0xFF)
-                        if (xor == (frame[28].toInt() and 0xFF)) {
+                        val ok = xor == (frame[28].toInt() and 0xFF)
+                        onPosFrame?.invoke(ok)
+                        if (ok) {
                             onReported(
                                 ReportedPosition(
                                     label = labelFrom(frame, 3),
@@ -123,6 +131,11 @@ object K5ViewerProtocol {
                     0x02, 0x05, 0x06 -> {
                         if (buf.size < 5) return
                         val len = ((buf[3].toInt() and 0xFF) shl 8) or (buf[4].toInt() and 0xFF)
+                        // Reject absurd lengths (corrupt stream) instead of stalling
+                        if (len > 2000) {
+                            buf = buf.copyOfRange(1, buf.size)
+                            continue
+                        }
                         val total = 5 + len + 1
                         if (buf.size < total) return
                         buf = buf.copyOfRange(total, buf.size)

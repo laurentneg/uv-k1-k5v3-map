@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Classic APRS primary-table house (/-) style pin -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="56dp"
+    android:viewportWidth="48"
+    android:viewportHeight="56">
+    <!-- pin tip -->
+    <path
+        android:fillColor="#C62828"
+        android:pathData="M24,54c0,0 -14,-14.5 -14,-26.5C10,17.4 16.3,11 24,11s14,6.4 14,16.5C38,39.5 24,54 24,54z" />
+    <!-- roof -->
+    <path
+        android:fillColor="#FFEBEE"
+        android:pathData="M24,18l-10,8h3v10h14V26h3z" />
+    <path
+        android:fillColor="#B71C1C"
+        android:pathData="M24,18l-10,8h20z" />
+    <!-- door -->
+    <path
+        android:fillColor="#B71C1C"
+        android:pathData="M22,29h4v7h-4z" />
+</vector>

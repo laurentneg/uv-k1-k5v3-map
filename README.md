@@ -11,10 +11,11 @@ fiable sur Chrome Android.
 
 ## PWA (PC / desktop)
 
-Les fichiers à la racine (`index.html`, `serial/`, …) restent une PWA pour
+Les fichiers à la racine du répertoire web (`index.html`, `serial/`, …) restent une PWA pour
 **Chrome/Edge desktop** + Web Serial.
 
 ```sh
+cd web
 python3 -m http.server 8080
 ```
 

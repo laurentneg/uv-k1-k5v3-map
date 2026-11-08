@@ -2,7 +2,11 @@
 <resources>
     <color name="bg">#08131A</color>
     <color name="panel">#0E1B24</color>
+    <color name="panel_elevated">#152833</color>
+    <color name="border">#3A5663</color>
     <color name="accent">#63E6BE</color>
+    <color name="accent_dark">#0B493D</color>
+    <color name="on_accent">#06241E</color>
     <color name="text">#EAF1F6</color>
-    <color name="muted">#94A9B4</color>
+    <color name="muted">#B7C9D2</color>
 </resources>
